@@ -271,32 +271,32 @@ function addDept(){
         )
         }
       
-      function updateEmployeeRole(){
+    //   function updateEmployeeRole(){
 
-      connection.query("SELECT first_name, last_name, id FROM employee",
-      function(err,res){
-        let employee = res.map(employee => ({name: employee.first_name + " " + employee.last_name, value: employee.id}))​
-        inquirer
-        .prompt([
-          {
-            type: "list",
-            name: "employeeName",
-            message: "Which employee's role would you like to update?", 
-            choices: employee
-          },
-          {
-            type: "input",
-            name: "role",
-            message: "What is your new role?"
-          }
-        ])
-        .then (function(res){
-          connection.query(`UPDATE employee SET role_id = ${res.role} WHERE id = ${res.employeeName}`,
-          function (err, res){
-            start()
-          }
-          );
-        })
-      }
-      )
-      }   
+    //   connection.query("SELECT first_name, last_name, id FROM employee",
+    //   function(err,res){
+    //     let employee = res.map(employee => ({name: employee.first_name + " " + employee.last_name, value: employee.id}))​
+    //     inquirer
+    //     .prompt([
+    //       {
+    //         type: "list",
+    //         name: "employeeName",
+    //         message: "Which employee's role would you like to update?", 
+    //         choices: employee
+    //       },
+    //       {
+    //         type: "input",
+    //         name: "role",
+    //         message: "What is your new role?"
+    //       }
+    //     ])
+    //     .then (function(res){
+    //       connection.query(`UPDATE employee SET role_id = ${res.role} WHERE id = ${res.employeeName}`,
+    //       function (err, res){
+    //         start()
+    //       }
+    //       );
+    //     })
+    //   }
+    //   )
+    //   }   
