@@ -1,5 +1,4 @@
 const mysql = require("mysql");
-const cTable = require('console.table');
 const inquirer = require ('inquirer'); 
 
 const connection = mysql.createConnection(
@@ -210,3 +209,55 @@ function addDept(){
     })
   }
 
+  function viewAllDept(){
+    connection.query ("SELECT * FROM department", function(err, res){
+      console.table(res);
+      start();
+    })
+    }
+    
+    function addRole() {
+      let department= []; 
+    connection.query("SELECT * FROM department",
+    function(err,res){
+      if(err) throw err;
+      for (let i=0; i <res.length; i++){
+        res[i].first_name + " " + res[i].last_name
+        department.push({name: res[i].name, value: res[i].id});
+      }
+    inquirer
+    .prompt([
+      {
+        type: "input", 
+        name: "title",
+        message: "What role would you like to add?"
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "What is the salary for the role?"
+      },
+      {
+        type: "list",
+        name: "department",
+        message: "what department?",
+        choices: department
+      }
+    ])
+    .then (function(res){
+      console.log(res); 
+      const query = connection.query(
+        "INSERT INTO role SET ?",
+        {
+          title: res.title,
+          salary: res.salary,
+          department_id: res.department
+        }, 
+        function (err, res){
+          if (err) throw err;
+          start(); 
+        }
+      )
+    })
+    })
+    }
