@@ -117,3 +117,96 @@ const connection = mysql.createConnection(
         );    
       })
     }
+
+    function viewAllemployee() {
+
+        connection.query("SELECT employee.first_name, employee.last_name, role.title AS \"role\", managers.first_name AS \"manager\" FROM employee LEFT JOIN role ON employee.role_id = role.id LEFT JOIN employee managers ON employee.manager_id = managers.id GROUP BY employee.id",  
+        function(err, res) {
+          if (err) throw err;
+          console.table(res);
+          start();
+        });
+      }
+      
+      function removeEmployee(){
+        let employeeList = [];
+        connection.query(
+          "SELECT employee.first_name, employee.last_name FROM employee", (err,res) => {
+            for (let i = 0; i < res.length; i++){
+              employeeList.push(res[i].first_name + " " + res[i].last_name);
+            }
+        inquirer 
+        .prompt ([ 
+          {
+            type: "list", 
+            message: "Which employee would you like to delete?",
+            name: "employee",
+            choices: employeeList
+      
+          },
+        ])
+        .then (function(res){
+          const query = connection.query(
+            `DELETE FROM employee WHERE concat(first_name, ' ' ,last_name) = '${res.employee}'`,
+              function(err, res) {
+              if (err) throw err;
+              console.log( "Employee deleted!\n");
+           start();
+          });
+          });
+          }
+            );
+            };
+
+            function addDept(){
+  inquirer
+  .prompt([
+    {
+      type: "input",
+      name: "deptName", 
+      message: "What Department would you like to add?"
+    }
+  ])
+  .then(function(res){
+    console.log(res);
+    const query = connection.query(
+      "INSERT INTO department SET ?", 
+      {
+        name: res.deptName
+      }, 
+      function(err, res){
+        connection.query("SELECT * FROM department", function(err, res){
+          console.table(res); 
+          start(); 
+        })
+      }
+    )
+  })
+}
+
+function addDept(){
+    inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "deptName", 
+        message: "What Department would you like to add?"
+      }
+    ])
+    .then(function(res){
+      console.log(res);
+      const query = connection.query(
+        "INSERT INTO department SET ?", 
+        {
+          name: res.deptName
+        }, 
+        function(err, res){
+          connection.query("SELECT * FROM department", function(err, res){
+            console.table(res); 
+            start(); 
+          })
+        }
+      )
+    })
+  }
+
